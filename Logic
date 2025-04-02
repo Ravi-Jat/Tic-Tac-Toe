@@ -1,0 +1,40 @@
+import javax.swing.JButton;
+import javax.swing.JLabel;
+
+public class logic {
+    private JButton[] buttons;
+    private JLabel statusLabel;
+
+    public logic(JButton[] buttons, JLabel statusLabel) {
+        this.buttons = buttons;
+        this.statusLabel = statusLabel;
+    }
+
+    // Check for a win condition
+    public boolean checkWin() {
+        int[][] winConditions = {
+                {0, 1, 2}, {3, 4, 5}, {6, 7, 8}, // Rows
+                {0, 3, 6}, {1, 4, 7}, {2, 5, 8}, // Columns
+                {0, 4, 8}, {2, 4, 6}              // Diagonals
+        };
+
+        for (int[] condition : winConditions) {
+            if (buttons[condition[0]].getText().equals(buttons[condition[1]].getText()) &&
+                    buttons[condition[1]].getText().equals(buttons[condition[2]].getText()) &&
+                    !buttons[condition[0]].getText().isEmpty()) {
+                return true; // player won
+            }
+        }
+        return false; // No winner
+    }
+
+    // Check for a tie condition
+    public boolean checkTie() {
+        for (JButton button : buttons) {
+            if (button.getText().isEmpty()) {
+                return false;
+            }
+        }
+        return true; // All buttons are filled, and it's a tie
+    }
+}
