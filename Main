@@ -1,0 +1,26 @@
+
+import javax.swing.*;
+import java.awt.*;
+
+public class Main {
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Tic Tac Toe");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setResizable(false);
+            frame.setSize(500, 500);
+            frame.setLocationRelativeTo(null);
+            frame.setBackground(Color.BLACK);
+
+            frame.setLayout(null);
+
+            ImageIcon icon = new ImageIcon("D:\\TTT\\src\\TT.png");
+            frame.setIconImage(icon.getImage());
+
+            gboard gameBoard = new gboard(frame);
+            frame.add(gameBoard);
+
+            frame.setVisible(true);
+        });
+    }
+}
