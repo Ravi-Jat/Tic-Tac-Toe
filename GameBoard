@@ -1,0 +1,78 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class gboard extends JPanel {
+    private JButton[] buttons = new JButton[9];
+    private JLabel statusLabel;
+    private String currentPlayer = "X";
+    private logic gameLogic;
+
+    public gboard(JFrame frame) {
+        setBackground(Color.BLACK);
+        setBounds(120, 100, 250, 250);
+        setLayout(new GridLayout(3, 3));
+
+        statusLabel = new JLabel("Current Player: X", SwingConstants.CENTER);
+        statusLabel.setOpaque(true);
+        statusLabel.setForeground(Color.BLACK);
+        statusLabel.setFont(new Font("Arial", Font.BOLD, 40));
+        statusLabel.setBounds(50, 20, 400, 50);
+        frame.add(statusLabel);
+
+        gameLogic = new logic(buttons, statusLabel);
+
+        for (int i = 0; i < 9; i++) {
+            buttons[i] = new JButton();
+            buttons[i].setBackground(Color.YELLOW);
+            buttons[i].setFont(new Font("Arial", Font.PLAIN, 50));
+            buttons[i].setEnabled(true);
+
+            final int index = i;
+            buttons[i].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    buttons[index].setForeground(Color.BLACK);
+                    buttons[index].setText(currentPlayer);
+                    buttons[index].setEnabled(false);
+
+                    if (gameLogic.checkWin()) {
+                        JOptionPane.showMessageDialog(frame, "Player " + currentPlayer + " wins 😊😊", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                        resetGame();
+                    } else if (gameLogic.checkTie()) {
+                        JOptionPane.showMessageDialog(frame, "It's a tie!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                        resetGame();
+                    } else {
+                        currentPlayer = currentPlayer.equals("X") ? "O" : "X";
+                        statusLabel.setText("Current Player: " + currentPlayer);
+                    }
+                }
+            });
+
+            add(buttons[i]);
+        }
+
+        JButton resetButton = new JButton("Reset");
+        resetButton.setBackground(Color.LIGHT_GRAY);
+        resetButton.setForeground(Color.BLACK);
+        resetButton.setFont(new Font("Arial", Font.PLAIN, 40));
+        resetButton.setBounds(122, 380, 245, 50);
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetGame();
+            }
+        });
+        frame.add(resetButton);
+    }
+
+    private void resetGame() {
+        for (JButton button : buttons) {
+            button.setText("");
+            button.setEnabled(true);
+        }
+        currentPlayer = "X";
+        statusLabel.setText("Current Player: " + currentPlayer);
+    }
+}
